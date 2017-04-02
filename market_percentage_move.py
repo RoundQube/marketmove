@@ -46,5 +46,6 @@ with open(filename, 'rb') as f:
 
 		# set pointer back to beginning of file
 		index = index + 1
-
-	print "Breached %d times in the dataset" % breached
+	
+	percentageBreached = float(breached) / float(index) * 100
+	print "Breached %d out of %d times: %.2f%s" % (breached, index, percentageBreached, "%")
