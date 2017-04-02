@@ -8,7 +8,6 @@ from datetime import timedelta
 daysTotal = 0
 percentage = 0
 index = 0
-percentage = 1
 breached = 0
 '''
 main
