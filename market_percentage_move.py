@@ -16,7 +16,7 @@ main
 
 # process command-line arguments
 if len(sys.argv) < 3:
-	print "ERROR: Must enter input file, days and percentage: ./spx_percentage_move.py <input file> <days> <percentage>\nExample: ./spx_percentage_move.py spx_2010-2016.csv 3 1"
+	print "ERROR: Must enter input file, days and percentage: ./market_percentage_move.py <input file> <days> <percentage>\nExample: ./market_percentage_move.py spx_2010-2016.csv 3 1"
 	sys.exit()
 else:
 	filename = sys.argv[1]
@@ -25,19 +25,19 @@ else:
 
 with open(filename, 'rb') as f:
 	reader = csv.reader(f)
+	next(reader, None) # skip header 
 	rows = list(reader)
 	for row in rows[index:]:
 		shift = index + daysTotal + 1
 		newRows = rows[index:shift]
-		
 		try:
 			startDate = newRows[0][0]
-			startDateClose = float(newRows[0][2])
+			startDateClose = float(newRows[0][4])
 			endDate = newRows[daysTotal][0]
-			endDateClose = float(newRows[daysTotal][2])
+			endDateClose = float(newRows[daysTotal][4])
 			move = endDateClose - startDateClose
 			percentageChange = move / startDateClose * 100
-			percentageChangeAbs = abs(move / startDateClose * 100)
+			percentageChangeAbs = abs(percentageChange)
 		except IndexError:
 			break
 
@@ -48,4 +48,4 @@ with open(filename, 'rb') as f:
 		# set pointer back to beginning of file
 		index = index + 1
 
-	print "Beached %d times in the dataset" % breached
+	print "Breached %d times in the dataset" % breached
