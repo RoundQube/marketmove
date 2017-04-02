@@ -7,7 +7,7 @@ Pre-requisites:
 To ensure the script runs on your system, you will need
 1. Python
 2. Python CSV library (dependency for the script to run)
-3. Your dataset -- you can pull this directly from finance.yahoo.com.  I just search for the underlying (SPX in this case) and pull down the historical dataset in CSV.  There is no need to alter the data you download, just feed it into the script.
+3. Your dataset -- you can pull this directly from finance.yahoo.com.  I just search for the underlying (SPX in this case) and pull down the historical dataset in CSV.  There is no need to alter the data you download, just feed it into the script.  Or you can download the SPX dataset I have uploaded to this repository to run it for yourself the first time.
 
 How to run:
 The script requires you to add there parameters
