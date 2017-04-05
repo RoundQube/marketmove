@@ -1,125 +1,75 @@
-#!/usr/bin/python
-
+#!/usr/bin/env python
+from __future__ import print_function
 import sys
 import csv
-import getopt
+import argparse
 from datetime import datetime
 from datetime import timedelta
 
-'''
-show error
-'''
-def showUsage():
-	print "ERROR: Must enter input file, days and percentage (or points): ./market_move.py -i <input file> -d <days> -p <percentage> or -t <points>\nExample (percentage moved): ./market_move.py -i spx_2010-2016.csv -d 3 -p 1\nExample (points moved): ./market_move.py -i spx_2010-2016.csv -d 3 -t 25"
-	sys.exit(2)
 
-'''
-calculate range-based by points moved
-'''
-def calculateRangeBasedPoints(filename, days, points):
-	index = 0
-	breached = 0
-	with open(filename, 'rb') as f:
-		reader = csv.reader(f)
-		next(reader, None) # skip header 
-		rows = list(reader) # 
-		for row in rows[index:]:
-			shift = index + days + 1
-			newRows = rows[index:shift]
-			try:
-				startDate = newRows[0][0]
-				startDateClose = float(newRows[0][4])
-				endDate = newRows[days][0]
-				endDateClose = float(newRows[days][4])
-				move = endDateClose - startDateClose
-				moveAbs = abs(move)
-			except IndexError:
-				break
+def calculateRangeBased(filename, days, base_num, base_type="percentage"):
+    '''
+    calculate range-based by points or percentages moved
+    '''
+    index = 0
+    breached = 0
+    with open(filename, 'r') as f:
+        reader = csv.reader(f)
+        next(reader, None)  # skip header
+        rows = list(reader)
+        for row in rows[index:]:
+            shift = index + days + 1
+            newRows = rows[index:shift]
+            try:
+                startDate = newRows[0][0]
+                startDateClose = float(newRows[0][4])
+                endDate = newRows[days][0]
+                endDateClose = float(newRows[days][4])
+                move = endDateClose - startDateClose
 
-			if moveAbs >= points:
-				breached = breached + 1
-				print "Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move)
+                # Conversion to percentage or keep absolute value
+                if base_type == "percentage":
+                    percentageChange = move / startDateClose * 100
+                    moveAbs = abs(percentageChange)
+                else:
+                    moveAbs = abs(move)
 
-			# set pointer back to beginning of file
-			index = index + 1
-	
-		percentageBreached = float(breached) / float(index) * 100
-		print "Breached %d out of %d times: %.2f%s" % (breached, index, percentageBreached, "%")
+            except IndexError:
+                break
 
-'''
-calculate range-based by percentage moved
-'''
-def calculateRangeBasedPercentage(filename, days, percentage):
-	index = 0
-	breached = 0
-	with open(filename, 'rb') as f:
-		reader = csv.reader(f)
-		next(reader, None) # skip header 
-		rows = list(reader) # 
-		for row in rows[index:]:
-			shift = index + days + 1
-			newRows = rows[index:shift]
-			try:
-				startDate = newRows[0][0]
-				startDateClose = float(newRows[0][4])
-				endDate = newRows[days][0]
-				endDateClose = float(newRows[days][4])
-				move = endDateClose - startDateClose
-				percentageChange = move / startDateClose * 100
-				percentageChangeAbs = abs(percentageChange)
-			except IndexError:
-				break
+            if moveAbs >= base_num:
+                breached = breached + 1
+                print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move))
 
-			if percentageChangeAbs >= percentage:
-				breached = breached + 1
-				print "Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f, Percentage: %.2f" % (startDate, startDateClose, endDate, endDateClose, move, percentageChange)
+            # set pointer back to beginning of file
+            index = index + 1
 
-			# set pointer back to beginning of file
-			index = index + 1
-	
-		percentageBreached = float(breached) / float(index) * 100
-		print "Breached %d out of %d times: %.2f%s" % (breached, index, percentageBreached, "%")
+        percentageBreached = float(breached) / float(index) * 100
+        print("Breached %d out of %d times: %.2f%s" % (breached, index, percentageBreached, "%"))
 
-'''
-main
-'''
-def main(argv):
-	
-	byPercentage = True
-	filename = ""
-	days = 0
-	percentage = 0
-	points = 0
+def main():
+    '''
+    main
+    '''
 
-	try:
-		opts, args = getopt.getopt(argv, "h:i:d:p:t:")
-	except getopt.GetoptError:
-		showUsage()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--input", action="store", default="spx_2010-2016_full.csv", metavar="csv", help="input CSV file from Yahoo Finance")
+    parser.add_argument("-d", "--days", action="store", required=True, type=int, metavar="#", help="moving window of days")
+    parser.add_argument("-p", "--percentage", action="store", type=int, metavar="%", help="use percentage move")
+    parser.add_argument("-t", "--points", action="store", type=int, metavar="#", help="use points move")
+    args = parser.parse_args()
 
-	for opt, arg in opts:
-		if opt == '-h':
-			showUsage()
-		elif opt == '-i':
-			filename = arg
-		elif opt == '-d':
-			days = int(arg)
-		elif opt == '-p':
-			percentage = float(arg)
-			byPercentage = True
-			byPoints = False
-		elif opt == '-t':
-			points = int(arg)
-			byPercentage = False
-			byPoints = True
+    if not (args.percentage or args.points):
+        parser.error('No range requested: add -p/--percentage or -t/--points')
 
-	if byPercentage == True:
-		calculateRangeBasedPercentage(filename, days, percentage)
-	else:
-		calculateRangeBasedPoints(filename, days, points)
+    if args.percentage:
+        calculateRangeBased(args.input, args.days, args.percentage, base_type="percentage")
+    else:
+        calculateRangeBased(args.input, args.days, args.points, base_type="points")
 
-	
+
 '''
 send command-line arguments to main for processing
 '''
 if __name__ == "__main__":
-	main(sys.argv[1:])
+    main()
