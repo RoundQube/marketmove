@@ -55,7 +55,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", action="store", default="spx_2010-2016_full.csv", metavar="csv", help="input CSV file from Yahoo Finance")
     parser.add_argument("-d", "--days", action="store", required=True, type=int, metavar="#", help="moving window of days")
-    parser.add_argument("-p", "--percentage", action="store", type=int, metavar="%", help="use percentage move")
+    parser.add_argument("-p", "--percentage", action="store", type=float, metavar="%", help="use percentage move")
     parser.add_argument("-t", "--points", action="store", type=int, metavar="#", help="use points move")
     args = parser.parse_args()
 
