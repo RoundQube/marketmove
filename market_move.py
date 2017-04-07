@@ -39,8 +39,11 @@ def calculateRangeBased(filename, days, base_num, base_type="percentage"):
 
             if moveAbs >= base_num:
                 breached = breached + 1
-                print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move))
-
+		if base_type == "percentage":
+                	print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f, Percentage: %.2f%s" % (startDate, startDateClose, endDate, endDateClose, move, percentageChange, "%"))
+		else:
+                	print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move))
+			
             # set pointer back to beginning of file
             index = index + 1
 
