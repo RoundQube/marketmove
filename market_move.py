@@ -44,7 +44,7 @@ def calculateRangeBased(filename, days, base_num, base_type="percentage"):
 		else:
                 	print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move))
 			
-            # set pointer back to beginning of file
+            # track iterations processed to output percentage of breaches occurred
             index = index + 1
 
         percentageBreached = float(breached) / float(index) * 100
