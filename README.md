@@ -31,7 +31,7 @@ The script requires you to add three (3) parameters:
 If you wanted to know how many times SPX breached 1% move (up or down) over a 3
 trading session over the dataset, then you run it as:
 
-  `./market_move.py -i spx_2010-2016_full.csv -d 3 -p 1`
+  `./market_move.py -i spx_042012-042017.csv -d 3 -p 1`
 
 The script will traverse each trading day in your dataset and shift by 3 days
 then compare the closing prices of that range, if it breaches your percentage
@@ -41,7 +41,7 @@ dataset based on your input.
 
 For points, same except you pass in -t with your points value. For example:
 
-  `./market_move.py -i spx_2010-2016_full.csv -d 3 -t 25`
+  `./market_move.py -i spx_042012-042017.csv -d 3 -t 25`
 
 ## Output
 
