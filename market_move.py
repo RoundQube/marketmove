@@ -17,6 +17,7 @@ def calculateRangeBased(filename, days, base_num, base_type="percentage"):
         reader = csv.reader(f)
         next(reader, None)  # skip header
         rows = list(reader)
+        rows.reverse()
         for row in rows[index:]:
             shift = index + days + 1
             newRows = rows[index:shift]
@@ -44,7 +45,7 @@ def calculateRangeBased(filename, days, base_num, base_type="percentage"):
 		else:
                 	print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move))
 			
-            # track iterations processed to output percentage of breaches occurred
+            # set pointer back to beginning of file
             index = index + 1
 
         percentageBreached = float(breached) / float(index) * 100
@@ -59,7 +60,7 @@ def main():
     parser.add_argument("-i", "--input", action="store", default="spx_2010-2016_full.csv", metavar="csv", help="input CSV file from Yahoo Finance")
     parser.add_argument("-d", "--days", action="store", required=True, type=int, metavar="#", help="moving window of days")
     parser.add_argument("-p", "--percentage", action="store", type=float, metavar="%", help="use percentage move")
-    parser.add_argument("-t", "--points", action="store", type=int, metavar="#", help="use points move")
+    parser.add_argument("-t", "--points", action="store", type=float, metavar="#", help="use points move")
     args = parser.parse_args()
 
     if not (args.percentage or args.points):
