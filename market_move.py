@@ -17,7 +17,6 @@ def calculateRangeBased(filename, days, base_num, base_type="percentage"):
         reader = csv.reader(f)
         next(reader, None)  # skip header
         rows = list(reader)
-        rows.reverse()
         for row in rows[index:]:
             shift = index + days + 1
             newRows = rows[index:shift]
