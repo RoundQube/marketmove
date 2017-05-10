@@ -17,7 +17,8 @@ def calculateRangeBased(symbol, days, base_num, base_type="percentage"):
     d = date.today() - timedelta(days=1835)
     stock = Share(symbol)
     jsonData = stock.get_historical(d.strftime("%Y-%m-%d"), date.today().strftime("%Y-%m-%d"))
-    
+    jsonData.reverse()
+	
     for item in jsonData[index:]:
         shift = index + days + 1
         newRows = jsonData[index:shift]
