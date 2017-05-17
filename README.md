@@ -33,6 +33,7 @@ If you wanted to know how many times SPY breached 1% move (up or down) over a 3
 trading session over the dataset, then you run it as:
 
   `./market_move.py -i spy_042012-042017.csv -d 3 -p 1`
+  
   `./market_move_network.py -s SPY -d 3 -p 1`
 
 The script will traverse each trading day in your dataset and shift by 3 days
@@ -44,6 +45,7 @@ dataset based on your input.
 For points, same except you pass in -t with your points value. For example:
 
   `./market_move.py -i spy_042012-042017.csv -d 3 -t 25`
+  
   `./market_move_network.py -s SPY -d 3 -t 25`
 
 ## Output
