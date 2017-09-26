@@ -32,7 +32,7 @@ def calculateRangeBasedMagnitude(filename, days, multiplier):
                     endDateClose = float(rows[index][4])
                     move = endDateClose - startDateClose
 
-                    if(move >= (currentPrice * multiplier)):
+                    if(move > 0 and move >= ((currentPrice * multiplier) - currentPrice)):
                         print("Start Date: %s, Start Date Close: %.2f, End Date: %s, End Date Close: %.2f, Move: %.2f" % (startDate, startDateClose, endDate, endDateClose, move))
                         breached = breached + 1
                 except IndexError:
