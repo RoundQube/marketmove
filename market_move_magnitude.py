@@ -40,7 +40,7 @@ def calculateRangeBasedMagnitude(filename, days, multiplier):
 
         percentageBreached = float(breached) / counter * 100
         print("Breached: %d out of %d (%.2f%s)" % (breached, counter, percentageBreached, "%"))
-            
+
 def calculateMagnitude(filename):
     '''
     calculate single-day largest moves
@@ -53,18 +53,18 @@ def calculateMagnitude(filename):
         rows = list(reader)
         for row in rows[0:]:
             try:
-                move = float(rows[index+1][4]) - float(rows[index][4])
+                move = float(rows[index+1][2]) - float(rows[index][3])
                 if move > largestMove:
                     largestMove = move
                     startDate = rows[index][0]
-                    startDateClose = float(rows[index][4])
+                    startDateLow = float(rows[index][3])
                     endDate = rows[index+1][0]
-                    endDateClose = float(rows[index+1][4])
+                    endDateHigh = float(rows[index+1][2])
                 index = index + 1
             except IndexError:
                 break
 
-        print("Largest Move: %.2f\tStart Date: %s\tStart Date Close: %.2f\tEnd Date: %s\tEnd Date Close: %.2f" % (largestMove, startDate, startDateClose, endDate, endDateClose))
+        print("Largest Move: %.2f\tStart Date: %s\tStart Date Low: %.2f\tEnd Date: %s\tEnd Date High: %.2f" % (largestMove, startDate, startDateLow, endDate, endDateHigh))
 
 def main():
     '''
