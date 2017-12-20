@@ -33,7 +33,7 @@ If you wanted to know how many times SPY breached 1% move (up or down) over a 3
 trading session over the dataset, then you run it as:
 
   `./market_move.py -i spy_042012-042017.csv -d 3 -p 1`
-  
+
   `./market_move_network.py -s SPY -d 3 -p 1`
 
 The script will traverse each trading day in your dataset and shift by 3 days
@@ -45,8 +45,22 @@ dataset based on your input.
 For points, same except you pass in -t with your points value. For example:
 
   `./market_move.py -i spy_042012-042017.csv -d 3 -t 25`
-  
+
   `./market_move_network.py -s SPY -d 3 -t 25`
+
+How often VIX doubled in 60 days?
+
+  `./market_move_magnitude.py -i vix_1992-2017.csv -d 60 -m 2`
+
+  `OUTPUT: 440 out of 6983 (6.30%)`
+
+6% of the time, in a rolling 60 day window, did the VIX double over the last 27 years.
+
+What was the largest 1 day move?
+
+  `./market_move_magnitude.py -i vix_1992-2017.csv`
+
+  `OUTPUT: Largest Move: 16.54 Start Date: 2008-10-21 Start Date Close: 53.11 End Date: 2008-10-22 End Date Close: 69.65`
 
 ## Output
 
